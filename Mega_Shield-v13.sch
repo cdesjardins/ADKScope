@@ -3499,16 +3499,6 @@ Basic schematic elements and footprints for 0603, 1206, and PTH 1/10th watt (sma
 <pinref part="JP5" gate="G$1" pin="1"/>
 </segment>
 </net>
-<net name="5V@1" class="0">
-<segment>
-<wire x1="175.26" y1="134.62" x2="175.26" y2="132.08" width="0.1524" layer="91"/>
-<pinref part="JP12" gate="G$1" pin="2"/>
-</segment>
-<segment>
-<wire x1="177.8" y1="134.62" x2="177.8" y2="132.08" width="0.1524" layer="91"/>
-<pinref part="JP12" gate="G$1" pin="1"/>
-</segment>
-</net>
 <net name="D22" class="0">
 <segment>
 <wire x1="165.1" y1="114.3" x2="167.64" y2="114.3" width="0.1524" layer="91"/>
@@ -3745,6 +3735,16 @@ Basic schematic elements and footprints for 0603, 1206, and PTH 1/10th watt (sma
 <wire x1="104.14" y1="93.98" x2="104.14" y2="91.44" width="0.1524" layer="91"/>
 <pinref part="R2" gate="G$1" pin="1"/>
 <pinref part="LED2" gate="G$1" pin="A"/>
+</segment>
+</net>
+<net name="5V@1" class="0">
+<segment>
+<pinref part="JP12" gate="G$1" pin="1"/>
+<wire x1="177.8" y1="132.08" x2="177.8" y2="134.62" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="JP12" gate="G$1" pin="2"/>
+<wire x1="175.26" y1="132.08" x2="175.26" y2="134.62" width="0.1524" layer="91"/>
 </segment>
 </net>
 </nets>
