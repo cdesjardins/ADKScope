@@ -9,4 +9,4 @@ In order to use it for anything you have to soldier blob everywhere, which I don
 So I intend to fix it.
 
 To see the shield check out this image:
-![Shield](ADKScope/megashield/ADKScopeShield.jpg)
+![Shield](ADKScope/blob/master/megashield/ADKScopeShield.jpg)
