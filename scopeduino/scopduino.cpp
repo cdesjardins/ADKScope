@@ -18,45 +18,68 @@
 
 #include <stdio.h>
 #include <max3421e.h>
-#include <usbhost.h>
-#include <usb_ch9.h>
 #include <Usb.h>
-#include <usbhub.h>
-
-USB     Usb;
+#include <adk.h>
 
 #define STORAGE_SIZE 2048
+#define LED_PIN      13
 
 byte g_storage_space[2][STORAGE_SIZE];
 int g_storage_index = 0;
 int g_storage_buffer_index = 0;
+USB g_usb;
+ADK g_adk(&g_usb,"Desjardins",
+            "Scopduino",
+            "Scopduino ADK",
+            "0.1a",
+            "http://chrisd.info/portfolio",
+            "d.e.a.d.b.e.e.f.");
 
 void setup() 
 {
-    // initialize the digital pin as an output.
-    // Pin 13 has an LED connected on most Arduino boards:
-    pinMode(13, OUTPUT);
+    Serial.begin(115200);
+    Serial.println("Welcome to Scopduino");
+    pinMode(LED_PIN, OUTPUT);
     DDRF = 0x00;
     memset(g_storage_space, 0, sizeof(g_storage_space));
-    Serial.begin(115200);
-    if (Usb.Init() == -1)
+    if (g_usb.Init() == -1) 
     {
-        Serial.println("OSC did not start.");
+        Serial.println("OSCOKIRQ failed to assert");
     }
-    delay( 200 );
-
 }
 
-void loop() 
+void processUsb()
 {
-    Usb.Task();
+    uint8_t rcode;
 
+    g_usb.Task();
+    if (g_adk.isReady() == false)
+    {
+        digitalWrite(LED_PIN, 0);
+        return;
+    }
+    digitalWrite(LED_PIN, g_storage_buffer_index);
+    rcode = g_adk.SndData(STORAGE_SIZE, g_storage_space[g_storage_index]);
+    if (rcode) 
+    {
+        Serial.print("USB send: ");
+        Serial.println(rcode);
+    }
+}
+
+void processLoop()
+{
     g_storage_space[g_storage_buffer_index][g_storage_index] = PINF;
     g_storage_index = (g_storage_index + 1) & (STORAGE_SIZE - 1);
 
     if (g_storage_index == 0)
     {
+        processUsb();
         g_storage_buffer_index = !g_storage_buffer_index;
-        digitalWrite(13, g_storage_buffer_index);
     }
+}
+
+void loop() 
+{
+    processLoop();
 }
